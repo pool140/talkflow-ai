@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalkFlow AI - تعلم الإنجليزية بالمواقف</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0B0F17',
+                        cardBg: '#161F30',
+                        accentBlue: '#6366F1',
+                        accentGreen: '#10B981',
+                        accentAmber: '#F59E0B',
+                        subtext: '#94A3B8'
+                    },
+                    fontFamily: {
+                        arabic: ['Tajawal', 'sans-serif'],
+                        english: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #0B0F17; color: #F8FAFC; }
+        .font-en { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-card { background: rgba(22, 31, 48, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-darkBg min-h-screen flex flex-col pb-20 select-none">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass-card px-4 py-3 flex justify-between items-center border-b border-slate-800">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-500/30">
+                💬
+            </div>
+            <div>
+                <h1 class="font-extrabold text-lg leading-tight bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">TalkFlow AI</h1>
+                <p class="text-xs text-subtext">تعلم الإنجليزية بالمواقف الحياتية</p>
+            </div>
+        </div>
+        <button onclick="toggleApiKeyModal()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/50 text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-key text-amber-400"></i>
+            <span id="apiKeyStatus">Gemini API</span>
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 px-4 pt-4 max-w-lg mx-auto w-full space-y-5">
+
+        <!-- AI Scenario Generator Banner -->
+        <section class="glass-card rounded-2xl p-4 border border-indigo-500/20 shadow-xl">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> توليد موقف جديد بالذكاء الاصطناعي
+                </span>
+            </div>
+            <p class="text-xs text-slate-300 mb-3">اكتب أي موقف يخطر ببالك لتوليد المحادثة والنطق العربي فوراً:</p>
+            <div class="flex gap-2">
+                <input id="customScenarioInput" type="text" placeholder="مثال: مفاصلة مع سائق تاكسي..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+                <button onclick="generateCustomScenario()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Category Scenarios List -->
+        <section class="space-y-2.5">
+            <h2 class="text-sm font-bold text-white flex items-center gap-2 mb-1">
+                <i class="fa-solid fa-compass text-indigo-400"></i> اختر الموقف اليومي
+            </h2>
+
+            <div onclick="openPresetScenario('parking')" class="glass-card rounded-xl p-3.5 flex items-center justify-between border border-slate-800 hover:border-indigo-500/40 cursor-pointer">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl">🚗</div>
+                    <div>
+                        <h4 class="font-bold text-sm text-white">ركن السيارة والاختلاف</h4>
+                        <p class="text-xs text-subtext">أولوية الركن في مكان ضيق</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-left text-slate-600 text-xs"></i>
+            </div>
+
+            <div onclick="openPresetScenario('restaurant')" class="glass-card rounded-xl p-3.5 flex items-center justify-between border border-slate-800 hover:border-indigo-500/40 cursor-pointer">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl">🍔</div>
+                    <div>
+                        <h4 class="font-bold text-sm text-white">طلب أكل وتعديل الوجبة</h4>
+                        <p class="text-xs text-subtext">التعامل مع الويتر والسؤال عن المكونات</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-left text-slate-600 text-xs"></i>
+            </div>
+
+            <div onclick="openPresetScenario('interview')" class="glass-card rounded-xl p-3.5 flex items-center justify-between border border-slate-800 hover:border-indigo-500/40 cursor-pointer">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl">💼</div>
+                    <div>
+                        <h4 class="font-bold text-sm text-white">مقابلة عمل (Interview)</h4>
+                        <p class="text-xs text-subtext">توضيح الخبرات السابقة والمهارات</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-left text-slate-600 text-xs"></i>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Dialogue Modal -->
+    <div id="scenarioModal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden flex-col">
+        <div class="px-4 py-3 bg-slate-900 border-b border-slate-800 flex items-center justify-between sticky top-0 z-10">
+            <div class="flex items-center gap-2">
+                <button onclick="closeScenarioModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center text-sm">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <div>
+                    <h3 id="modalTitle" class="font-bold text-sm text-white">عنوان الموقف</h3>
+                    <p id="modalSub" class="text-[10px] text-indigo-400">حوار تفاعلي بنطق عربي</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="dialogueContainer" class="flex-1 overflow-y-auto p-4 space-y-4 max-w-lg mx-auto w-full">
+            <!-- Dialogue Items Render Here -->
+        </div>
+    </div>
+
+    <!-- API Key Modal -->
+    <div id="apiKeyModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-card rounded-2xl p-5 max-w-sm w-full space-y-4">
+            <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                <i class="fa-solid fa-key text-amber-400"></i> إدخال Gemini API Key
+            </h3>
+            <input id="apiKeyInput" type="password" placeholder="ghp_xxxx or Gemini API Key..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+            <button onclick="saveApiKey()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded-xl text-xs">
+                حفظ المفتاح
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const PRESET_SCENARIOS = {
+            parking: {
+                title: "ركن السيارة والاختلاف",
+                sub: "حوار بين شخصين على أولويات الركن",
+                dialogue: [
+                    { speaker: "A", english: "Excuse me, I was waiting for this spot first!", arabic_pronunciation: "إكسكيوز مي، أي ووز ويتينج فور ذس سبوت فيرست!", egyptian_arabic: "لو سمحت، أنا كنت مستني مكان الركنة ده قبلك!" },
+                    { speaker: "B", english: "Oh, I'm sorry, I didn't notice your turn signal.", arabic_pronunciation: "أوه، أي ام سوري، أي ديدنت نوتيس يور تيرن سيجنال.", egyptian_arabic: "أوه أسف جداً، مأخدتش بالي إنك مشغل إشارة." },
+                    { speaker: "A", english: "Could you please back up a little bit?", arabic_pronunciation: "كود يو بليز باك أب أ ليتل بت؟", egyptian_arabic: "ممكن ترجع ورا شوية لو سمحت؟" }
+                ]
+            },
+            restaurant: {
+                title: "طلب أكل في مطعم",
+                sub: "التعامل مع الويتر",
+                dialogue: [
+                    { speaker: "A", english: "Hi, does this burger come with fries and drinks?", arabic_pronunciation: "هاي، داز ذس برجر كام ويذ فرايز أند درينكس؟", egyptian_arabic: "أهلاً، هل البرجر ده بييجي معاه بطاطس ومشروب؟" },
+                    { speaker: "B", english: "Yes, it's a full combo. Would you like extra cheese?", arabic_pronunciation: "يس، إتس أ فول كومبو. وود يو لايك إكسترا تشيز؟", egyptian_arabic: "أيوه، وجبة كاملة. تحب نضيف جبنة زيادة؟" }
+                ]
+            },
+            interview: {
+                title: "مقابلة عمل (Interview)",
+                sub: "أسئلة وإجابات HR",
+                dialogue: [
+                    { speaker: "A", english: "Can you tell me briefly about your background?", arabic_pronunciation: "كان يو تيل مي بريفلي أباوت يور باك جراوند؟", egyptian_arabic: "ممكن تحكي لي باختصار عن خلفيتك المهنية؟" },
+                    { speaker: "B", english: "I have 3 years of experience in customer success.", arabic_pronunciation: "أي هاف ثري ييرز أوف إكسبيرينس إن كستمر سكسيس.", egyptian_arabic: "عندي ٣ سنين خبرة في خدمة العملاء." }
+                ]
+            }
+        };
+
+        function openPresetScenario(key) {
+            const scenario = PRESET_SCENARIOS[key];
+            document.getElementById('modalTitle').innerText = scenario.title;
+            document.getElementById('modalSub').innerText = scenario.sub;
+            renderDialogue(scenario.dialogue);
+            document.getElementById('scenarioModal').classList.remove('hidden');
+            document.getElementById('scenarioModal').classList.add('flex');
+        }
+
+        function closeScenarioModal() {
+            document.getElementById('scenarioModal').classList.add('hidden');
+            document.getElementById('scenarioModal').classList.remove('flex');
+            window.speechSynthesis.cancel();
+        }
+
+        function renderDialogue(dialogue) {
+            const container = document.getElementById('dialogueContainer');
+            container.innerHTML = '';
+            dialogue.forEach(item => {
+                container.innerHTML += `
+                    <div class="glass-card rounded-xl p-3.5 space-y-1.5 border border-slate-800">
+                        <p class="font-en font-bold text-white text-sm">${item.english}</p>
+                        <div class="bg-amber-500/10 border border-amber-500/30 rounded px-2 py-0.5 text-xs text-amber-300 font-semibold inline-block">
+                            ${item.arabic_pronunciation}
+                        </div>
+                        <p class="text-xs text-subtext pt-1 border-t border-slate-800">${item.egyptian_arabic}</p>
+                        <button onclick="speakText('${item.english}')" class="mt-2 px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-[11px] font-bold">
+                            🔊 استماع
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const ut = new SpeechSynthesisUtterance(text);
+                ut.lang = 'en-US';
+                window.speechSynthesis.speak(ut);
+            }
+        }
+
+        function toggleApiKeyModal() {
+            const m = document.getElementById('apiKeyModal');
+            m.classList.toggle('hidden');
+            m.classList.toggle('flex');
+        }
+
+        function saveApiKey() {
+            const key = document.getElementById('apiKeyInput').value.trim();
+            if (key) {
+                localStorage.setItem('gemini_api_key', key);
+                toggleApiKeyModal();
+            }
+        }
+    </script>
+</body>
+</html>
